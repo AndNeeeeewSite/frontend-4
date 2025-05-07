@@ -1,0 +1,89 @@
+body{
+    background-color: #514F74;
+    font-family: "Montserrat", sans-serif;
+}
+.header_title{
+    color: #9B96F2;
+    font-size: 60px;
+}
+.login_button{
+    color: #9F9DC8;
+    font-size: 35px;
+}
+.header_container{
+    display: flex;
+    justify-content: space-between;
+}
+.container {
+    width: 1400px;
+    margin: 0 auto;
+    padding: 0 15px;
+  }
+
+.main_title{
+    margin-top: 80px;
+    color: #b2aefc;
+    font-size: 40px;
+    display: flex;
+    justify-content: center;
+}
+
+.render_panel{
+    background-color: #272548;
+    border-radius: 20px;
+    max-width: 650px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.render_title{
+    
+    font-size: 30px;
+    color: #b2aefc;
+}
+.render_disc{
+    color: #9B96F2;
+}
+.blog_library{
+    padding-top: 70px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+a{
+    color: #b2aefc;
+}
+
+input{
+    background-color:#b2aefc;;
+    border-radius: 10px;
+    height: 50px;
+    width: 300px;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+.holder{
+    padding-top: 70px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+.login_page{
+    display: flex;
+    gap: 20px;
+    flex-direction: column;
+}
+.login_title{
+    color: #b2aefc;
+    font-size: 40px;
+    display: flex;
+    justify-content: center;
+}
+.login_form{
+    display: flex;
+    flex-direction: column;
+}
