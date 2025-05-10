@@ -1,0 +1,20 @@
+a{
+    color: #b2aefc;
+}
+
+input{
+    background-color:#b2aefc;;
+    border-radius: 10px;
+    height: 50px;
+    width: 300px;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+body{
+    background-color: #514F74;
+    font-family: "Montserrat", sans-serif;
+}
+.header_title{
+    color: #9B96F2;
+    font-size: 60px;
+}

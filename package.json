@@ -2,8 +2,7 @@
   "name": "frontend-4",
   "version": "1.0.0",
   "scripts": {
-    "dev": "parcel src/index.html",
-    "server": "json-server src/db.json"
+    "dev": "node host.js"
   },
   "repository": {
     "type": "git",
@@ -17,11 +16,10 @@
   "homepage": "https://github.com/AndNeeeeewSite/frontend-4#readme",
   "description": "",
   "dependencies": {
-    "json-server": "^1.0.0-beta.3",
-    "parcel": "^2.14.4",
-    "parcel-bundler": "^1.12.5",
-    "parcel-plugin-handlebars-precompile": "^1.0.2",
-    "parcel-transformer-hbs": "^1.0.4"
+    "body-parser": "^2.2.0",
+    "express": "^5.1.0",
+    "fs": "^0.0.1-security",
+    "path": "^0.12.7"
   },
   "devDependencies": {
     "handlebars": "^4.7.8"
