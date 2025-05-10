@@ -11,8 +11,8 @@ function loginCheck(data){
 
 document.querySelector('.login_button').addEventListener('click', function(event) {
     event.preventDefault(); 
-    const login_name = document.querySelector('.login_name').value;
-    const login_password = document.querySelector('.login_password').value;
+    login_name = document.querySelector('.login_name').value;
+    login_password = document.querySelector('.login_password').value;
     options = {
         method: 'POST',
         headers: {

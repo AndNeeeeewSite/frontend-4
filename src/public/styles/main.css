@@ -38,11 +38,12 @@ body{
     gap: 10px;
 }
 .render_title{
-    
+    word-wrap: break-word;
     font-size: 30px;
     color: #b2aefc;
 }
 .render_disc{
+    word-wrap: break-word;
     color: #9B96F2;
 }
 .blog_library{

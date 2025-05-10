@@ -1,18 +1,18 @@
-const express = require('express');
-const path = require('path');
-const bodyParser = require('body-parser');
-const fs = require('fs');
-const app = express();
-const port = 1234;
+express = require('express');
+path = require('path');
+bodyParser = require('body-parser');
+fs = require('fs');
+app = express();
+port = 1234;
 
 adminData = {
     "name":"admin",
-    "password":"123456"
+    "password":"123"
 }
-adminToken = "Se9kYb0ZCpFBh16lE3z0G0dg8DpVKks0gEJEieaLDLHs9xJG7B9dt2VsBFtALMPzbHU09SyMd5UrqVU285gB2sMmQRSyd1vpUAlb3TGV1wD1KZB08woHkXAPoT94Of10Wd8cyOsTMYamB0u72sSx1t4DvsyEHb2v5Zzg7Mk7A7b2oeTBzGfJzl0ktg1Zj27L0rE2qvrcAmLTCSvywrq5XZsv148JYXb9tbhQzvUUEsfPJ98pFSj95ql8l3"
+adminToken = "aRgLwGGPa4kE54pqxG9gXC7PVfFWEvWS3mHW"
 
-const publicPath = path.join(__dirname, 'src', 'public');
-const privatePath = path.join(__dirname, 'src', 'private');
+publicPath = path.join(__dirname, 'src', 'public');
+privatePath = path.join(__dirname, 'src', 'private');
 
 
 app.use(bodyParser.json());
@@ -21,23 +21,29 @@ app.use('/js', express.static(path.join(privatePath, 'js')));
 app.use('/style', express.static(path.join(privatePath, 'style')));
 
 app.get('/', (req, res) => {
-    console.log('GET /');
+    now = new Date();
+
+    console.log('GET / ' + now);
     return res.sendFile(path.join(publicPath, 'index.html'));
 });
 
 app.get('/login', (req, res) => {
-    console.log('GET /login');
-    const token = req.query.token;
+    now = new Date();
+    console.log('GET /login '+ now);
+    token = req.query.token;
     return res.sendFile(path.join(publicPath, 'login.html'));
 });
 
 app.get('/posts', (req, res) => {
-    console.log('GET /posts');
+    now = new Date();
+    console.log('GET /posts '+ now);
     return res.sendFile(path.join(publicPath, 'db.json'));
 });
 
 app.post('/addpost', (req, res) => {
-    const userData = req.body.data;
+    now = new Date();
+    console.log('POST /addpost '+ now)
+    userData = req.body.data;
     if(req.body.token === adminToken){
         fs.writeFile(publicPath + '/db.json', JSON.stringify(userData, null, 2), function(err){
                 if (err) {
@@ -59,8 +65,9 @@ app.post('/addpost', (req, res) => {
 
 
 app.get('/admin', (req, res) => {
-    console.log('GET /admin');
-    const token = req.query.token;
+    now = new Date();
+    console.log('GET /admin '+ now);
+    token = req.query.token;
     if (token === adminToken) {
         return res.sendFile(path.join(privatePath, 'admin.html'));
     }   
@@ -69,29 +76,41 @@ app.get('/admin', (req, res) => {
     }
 });
 
-app.post('/logindata', (req, res) => {  
-    console.log('POST /logindata'); 
-    const userData = req.body;  
+app.post('/logindata', (req, res) => { 
+    now = new Date(); 
+    console.log('POST /logindata '+ now); 
+    userData = req.body;  
     if (userData.login_name === adminData.name && userData.login_password === adminData.password) {
         return res.json({ status: true , token:adminToken}); 
     }
     return res.json({ status: false }); 
 });
 
-app.post('/isadmin', (req, res) => {  
-    console.log('POST /isadmin'); 
-    const userToken = req.body.token;  
-    if (userToken === adminToken) {
-        return res.json({ status: true}); 
+app.delete('/deletepost', (req, res) => { 
+    now = new Date(); 
+    console.log('POST /deletepost '+ now); 
+    console.log(req.body)
+    userData = req.body.data;
+    if(req.body.token === adminToken){
+        fs.writeFile(publicPath + '/db.json', JSON.stringify(userData, null, 2), function(err){
+                if (err) {
+                    console.error('Error to delete post:', err);
+                    return res.json({ status: false }); 
+                } else {
+                    console.log('Post deleted');
+                }
+            });
+        return res.json({ status: true }); 
     }
-    return res.json({ status: false }); 
+    else{
+        return res.json({ status: false }); 
+    }
 });
-
 
 app.get('/404', (req, res) => {
     return res.sendFile(path.join(publicPath, 'err/404.html'));
 });
-app.get('/401', (req, res) => {
+app.get('/401', (req, res) => { 
     return res.sendFile(path.join(publicPath, 'err/401.html'));
 });
 app.use((req, res) => {
