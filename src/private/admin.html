@@ -26,7 +26,15 @@
             <button class="post_submit">Submit</button>
     </form>
     <form class="remove_form">
-        <h2 class="main_big_title">Remove posts</h2>
+        <div class="edit_div" style="display: none;" >
+            <h2 class="main_big_title">Edit post</h2>
+            <h2 class="main_title">Title:</h2>
+            <input type="text" class="post_title_edit">
+            <h2 class="main_title">Description:</h2>
+            <textarea type="text" class="post_desc_edit"></textarea>
+            <button id="save_edit_button" class="post_submit">Save</button>
+        </div>
+
         <div class="remove_posts">    
             <h1>Not found</h1>
         </div>

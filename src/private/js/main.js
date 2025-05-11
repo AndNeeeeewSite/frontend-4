@@ -1,6 +1,5 @@
 //                    Add
-
-add_button = document.querySelector('.post_submit') 
+add_button = document.querySelector('.post_submit')
 token = localStorage.getItem('token')
 
 function add_json_element(title, desc, data) {
@@ -41,14 +40,14 @@ function add_json_element(title, desc, data) {
 }
 
 
-add_button.addEventListener('click',function(event){
+add_button.addEventListener('click', function (event) {
     event.preventDefault();
     title = document.querySelector('.post_title_add').value
     description = document.querySelector('.post_desc_add').value
     if (title.trim().length > 0 && description.trim().length > 0) {
         title = title.trimStart()
         description = description.trimStart()
-         options = {
+        options = {
             method: "GET",
             headers: {
                 "Content-Type": "application/json; charset=UTF-8",
@@ -56,53 +55,114 @@ add_button.addEventListener('click',function(event){
         }
         fetch('/posts', options)
             .then(response => response.json())
-            .then(data => add_json_element(title,description,data))
+            .then(data => add_json_element(title, description, data))
             .catch(error => console.log("Error: " + error))
-    } 
+    }
     else {
         alert('Enter a normal text')
     }
 
 })
-//                    Remove
-function allDelete(){
-    function renderDelete(posts){
+//                    Remove and edit
+function allDelete() {
+    function renderDelete(posts) {
         posts = posts.posts
         console.log(posts)
         output = template({ posts });
         document.querySelector('.remove_posts').innerHTML = output
         delete_buttons = document.querySelectorAll('#delete_item')
         for (button of delete_buttons) {
-            button.addEventListener('click',function(event){
-            event.preventDefault()
-            options = {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json; charset=UTF-8",
-                }
-            }
-            fetch('/posts', options)
-            .then(response => response.json())
-            .then(data => {
-                idToRemove = this.parentNode.id
-                data.posts = data.posts.filter(post => post.id !== idToRemove);
+            button.addEventListener('click', function (event) {
+                event.preventDefault()
                 options = {
-                    method: 'DELETE',
+                    method: "GET",
                     headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ data , token})
+                        "Content-Type": "application/json; charset=UTF-8",
+                    }
                 }
-                fetch("/deletepost",options)
-                .then(response => response.json())
-                .then(data => console.log(data))
-                .catch(error => console.log(error))
-                this.parentNode.remove();
+                fetch('/posts', options)
+                    .then(response => response.json())
+                    .then(data => {
+                        idToRemove = this.parentNode.id
+                        data.posts = data.posts.filter(post => post.id !== idToRemove);
+                        options = {
+                            method: 'DELETE',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ data, token })
+                        }
+                        fetch("/deletepost", options)
+                            .then(response => response.json())
+                            .then(data => console.log(data))
+                            .catch(error => console.log(error))
+                        this.parentNode.remove();
+                    })
+                    .catch(error => console.log("Error: " + error))
             })
-            .catch(error => console.log("Error: " + error))
-        })
 
-    }
+        }
+        save_edit_button = document.querySelector('#save_edit_button')
+
+        edit_buttons = document.querySelectorAll('#edit_item')
+        for (button of edit_buttons) {
+            button.addEventListener('click', function (event) {
+                event.preventDefault()
+                let options = {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json; charset=UTF-8",
+                    }
+                };  
+                fetch('/posts', options)
+                    .then(response => response.json())
+                    .then(data => {
+                        idToEdit = this.parentNode.id
+                        titleToEdit = this.parentNode.children[0].textContent
+                        deskToEdit = this.parentNode.children[1].textContent
+                        editTitle = document.querySelector('.post_title_edit')
+                        editDesc = document.querySelector('.post_desc_edit')
+                        editTitle.value = titleToEdit
+                        editDesc.value = deskToEdit
+                        edit_form = document.querySelector('.edit_div')
+                        edit_form.style.display = 'flex'
+                        save_edit_button.addEventListener('click',function(event){
+                            event.preventDefault()
+                            editValueTitle = editTitle.value
+                            editValueDesc = editDesc.value
+                            if (editValueTitle.trim().length > 0 && editValueDesc.trim().length > 0) {
+                                editValueTitle = editValueTitle.trimStart()
+                                editValueDesc = editValueDesc.trimStart()
+                                editElemId = data.posts.findIndex(obj => obj.id === idToEdit)
+                                data.posts[editElemId].title = editValueTitle
+                                data.posts[editElemId].description = editValueDesc
+                                console.log(data.posts[editElemId])
+                                console.log(data)
+                                options = {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify({ data, token })
+                                }
+                                fetch("/editpost",options)
+                                .then(response => response.json())
+                                .then(data => {
+                                    window.location.href = window.location.href;
+                                }
+                                )
+                                .catch(error => console.log(error))
+                            }
+                            else{
+                                alert('Enter a normal text')
+                            }
+                        })
+                    })
+                    .catch(error => console.log("Error: " + error));
+
+            })
+
+        }
     }
     templateText = `
     {{#each posts}}
@@ -110,20 +170,21 @@ function allDelete(){
         <h2 class="render_title">{{title}}</h2>
         <h3 class="render_disc">{{description}}</h3>
         <button id="delete_item" class="post_submit">Remove</button>
+        <button id="edit_item" class="post_submit">Edit</button>
     </div>
     {{/each}}`;
 
     template = Handlebars.compile(templateText);
     options = {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json; charset=UTF-8",
-            }
-        };  
-        fetch('/posts', options)
-            .then(response => response.json())
-            .then(data => renderDelete(data))
-            .catch(error => console.log("Error: " + error));
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json; charset=UTF-8",
+        }
+    };
+    fetch('/posts', options)
+        .then(response => response.json())
+        .then(data => renderDelete(data))
+        .catch(error => console.log("Error: " + error));
 }
 
 allDelete()

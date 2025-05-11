@@ -59,6 +59,8 @@ body{
     word-wrap: break-word;
     color: #9B96F2;
 }
+
+.edit_div,
 .remove_form,
 .add_form{
     display: flex;

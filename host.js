@@ -89,7 +89,26 @@ app.post('/logindata', (req, res) => {
 app.delete('/deletepost', (req, res) => { 
     now = new Date(); 
     console.log('POST /deletepost '+ now); 
-    console.log(req.body)
+    userData = req.body.data;
+    if(req.body.token === adminToken){
+        fs.writeFile(publicPath + '/db.json', JSON.stringify(userData, null, 2), function(err){
+                if (err) {
+                    console.error('Error to delete post:', err);
+                    return res.json({ status: false }); 
+                } else {
+                    console.log('Post deleted');
+                }
+            });
+        return res.json({ status: true }); 
+    }
+    else{
+        return res.json({ status: false }); 
+    }
+});
+
+app.post('/editpost', (req, res) => { 
+    now = new Date(); 
+    console.log('POST /deletepost '+ now); 
     userData = req.body.data;
     if(req.body.token === adminToken){
         fs.writeFile(publicPath + '/db.json', JSON.stringify(userData, null, 2), function(err){
