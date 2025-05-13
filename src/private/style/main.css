@@ -44,7 +44,7 @@ body{
 .render_panel{
     background-color: #272548;
     border-radius: 20px;
-    max-width: 650px;
+    width: 650px;
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -87,3 +87,24 @@ body{
     justify-content: center;
     gap: 20px;
   }
+
+
+.render_tags{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-top: 5px;
+    gap: 5px;
+}
+.tag_title{
+    color: #b2aefc;
+}
+.render_tag{
+    background-color: #b2aefc;
+    color: #514F74;
+    padding: 5px 10px 5px 10px;
+    border-radius: 10px;
+}
+.remove_posts{
+    margin-bottom: 50px;
+}

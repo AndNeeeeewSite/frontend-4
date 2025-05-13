@@ -113,10 +113,37 @@ app.post('/editpost', (req, res) => {
     if(req.body.token === adminToken){
         fs.writeFile(publicPath + '/db.json', JSON.stringify(userData, null, 2), function(err){
                 if (err) {
-                    console.error('Error to delete post:', err);
+                    console.error('Error to edit post:', err);
                     return res.json({ status: false }); 
                 } else {
-                    console.log('Post deleted');
+                    console.log('Post edited');
+                }
+            });
+        return res.json({ status: true }); 
+    }
+    else{
+        return res.json({ status: false }); 
+    }
+});
+
+
+app.post('/addcomment', (req, res) => { 
+    now = new Date(); 
+    console.log('POST /addcomment '+ now); 
+    userData = req.body.comment;
+    userDataId = req.body.id;
+    if(userData.trim().length > 0){
+        userData = userData.trimStart()
+        console.log(userData)
+        posts_get = JSON.parse(require('fs').readFileSync(publicPath + '/db.json', 'utf8'));
+        change_element = posts_get.posts.find(u => u.id === userDataId)
+        change_element.comments.unshift(userData)
+        fs.writeFile(publicPath + '/db.json', JSON.stringify(posts_get, null, 2), function(err){
+                if (err) {
+                    console.error('Error to add comment:', err);
+                    return res.json({ status: false }); 
+                } else {
+                    console.log('Comment added');
                 }
             });
         return res.json({ status: true }); 
